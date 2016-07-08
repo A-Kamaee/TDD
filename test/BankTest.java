@@ -13,10 +13,10 @@ public class BankTest {
 	@Test
 	public void testReduceMoneyDifferentCurrency()
 	{
-		Bank bank = new Bank();
+		Bank bank = Bank.getInstance();
 		bank.addRate("CHF", "USD", 2);
-		Money result = bank.reduce(MoneyFactory.createFranc(2), "USD");
-		assertEquals(MoneyFactory.createDollar(1), result);
+		Money result = MoneyFactory.createFranc(2).calculate("USD");
+		assertEquals(MoneyFactory.createDollar(4), result);
 	}
 	
 }

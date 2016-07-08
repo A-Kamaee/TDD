@@ -54,18 +54,13 @@ public class Money implements Expression {
 
 	@Override
 	public Money calculate(String currency) {
-		return this;
-	}
-	
-	private Money exchange(Money money, String newCurrency)
-	{
-		if(money.getCurrency().equals(newCurrency))
+		if(this.getCurrency().equals(currency))
 		{
-			return new Money(money.getAmount(), money.getCurrency());
+			return new Money(this.getAmount(), this.getCurrency());
 		}
-		int tradeRate = Bank.getInstance().getTradeRate(money.getCurrency(), newCurrency);
-		int newAmount = money.times(tradeRate).getAmount();
-		return new Money(newAmount, newCurrency);
+		int tradeRate = Bank.getInstance().getTradeRate(this.getCurrency(), currency);
+		int newAmount = this.times(tradeRate).getAmount();
+		return new Money(newAmount, currency);
 	}
 	
 }

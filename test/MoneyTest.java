@@ -50,6 +50,8 @@ public class MoneyTest {
 	@Test
 	public void testAdditionWithRate()
 	{
+		Bank bank = Bank.getInstance();
+		
 		Money five = MoneyFactory.createDollar(5);
 		Expression sum = five.plus(five);
 		Money result = sum.calculate("USD");

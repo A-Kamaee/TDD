@@ -6,7 +6,7 @@ import java.util.List;
 public class Bank {
 	
 	private List<TradeRate> rates;
-	private Bank instance;	
+	private static Bank instance;	
 	
 	private Bank()
 	{
@@ -15,7 +15,11 @@ public class Bank {
 	
 	public static Bank getInstance()
 	{
-		return new Bank();
+		if(instance == null)
+		{
+			instance = new Bank();
+		}
+		return instance;
 	}
 	
 	public void addRate(String from, String to, int rate)
