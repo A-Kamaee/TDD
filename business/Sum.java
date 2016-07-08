@@ -1,26 +1,30 @@
 package business;
 
+import javax.naming.OperationNotSupportedException;
+
 public class Sum implements Expression {
 	
 	private Money augend;
 	private Money addend;
 	
-	protected Sum(Money augend)
+	protected Sum(Money augend, Money addend)
 	{
 		this.augend = augend;
+		this.addend = addend;
 	}
 	
 	@Override
-	public Expression plus(Money money) 
+	public Expression plus(Money money)
 	{
-		Sum result = new Sum(augend);
-		result.addend = money;
-		return result;
+		return null;
+//		throw new OperationNotSupportedException("Operation add money to sum not supported right now");
 	}
 
 	@Override
 	public Money calculate(String currency) {
-		int amount = augend.getAmount() + addend.getAmount();
+		Money newAugend = augend.calculate(currency);
+		Money newAddend = addend.calculate(currency);
+		int amount = newAddend.getAmount() + newAugend.getAmount();
 		Money result = new Money(amount, currency);
 		return result;
 	}

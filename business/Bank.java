@@ -22,12 +22,38 @@ public class Bank {
 		return instance;
 	}
 	
-	public void addRate(String from, String to, int rate)
+	public void addRate(String from, String to, float rate)
 	{
+		TradeRate item1 = getTradeRateItem(from, to);
+		if(item1 != null)
+		{
+			rates.remove(item1);
+		}
 		rates.add(new TradeRate(from, to, rate));
+		float invertedRate = (float)( 1 / rate);
+		TradeRate item2 = getTradeRateItem(to, from);
+		if(item2 != null)
+		{
+			rates.remove(item2);
+		}
+		rates.add(new TradeRate(to, from, invertedRate));
 	}
 	
-	public int getTradeRate(String from, String to)
+	public float getTradeRate(String from, String to)
+	{
+		TradeRate tradeRateItem = getTradeRateItem(from, to);
+		if(tradeRateItem == null)
+		{
+			throw new UnsupportedOperationException
+				(String.format("There is no trade rate from %s to %s.", from, to));
+		}
+		else
+		{
+			return tradeRateItem.rate;
+		}
+	}
+	
+	private TradeRate getTradeRateItem(String from, String to)
 	{
 		for(TradeRate item : rates)
 		{
@@ -35,19 +61,18 @@ public class Bank {
 			{
 				if(item.getTo().equals(to))
 				{
-					return item.getRate();
+					return item;
 				}
 			}
 		}
-		throw new UnsupportedOperationException
-			(String.format("There is no trade rate from %s to %s.", from, to));
+		return null;
 	}
 	
 	private class TradeRate
 	{	
 		private String from;
 		private String to;
-		private int rate;
+		private float rate;
 		
 		public String getFrom() {
 			return from;
@@ -55,11 +80,11 @@ public class Bank {
 		public String getTo() {
 			return to;
 		}
-		public int getRate() {
+		public float getRate() {
 			return rate;
 		}
 		
-		public TradeRate(String from, String to, int rate)
+		public TradeRate(String from, String to, float rate)
 		{
 			this.from = from;
 			this.to = to;

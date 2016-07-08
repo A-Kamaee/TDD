@@ -38,6 +38,15 @@ public class MoneyTest {
 	}
 	
 	@Test
+	public void testCalculation1()
+	{
+		Bank bank = Bank.getInstance();
+		bank.addRate("CHF", "USD", 11);
+		Money money = MoneyFactory.createFranc(2).calculate("USD");
+		assertEquals(MoneyFactory.createDollar(22), money);
+	}
+	
+	@Test
 	public void testSimpleAddition()
 	{
 		Money five = MoneyFactory.createDollar(5);
@@ -48,7 +57,7 @@ public class MoneyTest {
 	}
 	
 	@Test
-	public void testAdditionWithRate()
+	public void testAdditionWithRate1()
 	{
 		Bank bank = Bank.getInstance();
 		bank.addRate("USD", "CHF", 3);
@@ -57,6 +66,18 @@ public class MoneyTest {
 		Money result = sum.calculate("CHF");
 		
 		assertEquals(MoneyFactory.createFranc(24) , result);
+	}
+	
+	@Test
+	public void testAdditionWithRate2()
+	{
+		Bank bank = Bank.getInstance();
+		bank.addRate("USD", "CHF", 7);
+//		bank.addRate("CHF", "USD", 0.1428571428571429f);
+		Money dollar = MoneyFactory.createDollar(3);
+		Expression sum = dollar.plus(MoneyFactory.createFranc(14));
+		Money result = sum.calculate("USD");
+		assertEquals(MoneyFactory.createDollar(5), result);
 	}
 	
 	

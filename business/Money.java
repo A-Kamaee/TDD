@@ -35,16 +35,16 @@ public class Money implements Expression {
 		return true;
 	}
 	
-	public Money times(int multiplicity)
+	public Money times(float multiplicity)
 	{
-		return new Money(amount * multiplicity, currency);
+		int intAmount = Math.round(amount * multiplicity);
+		return new Money(intAmount, currency);
 	}
 	
 	@Override
-	public Expression plus(Money augend)
+	public Expression plus(Money addend)
 	{
-		Money newAddend = this.calculate(augend.currency);
-		return new Money(newAddend.amount + augend.amount, augend.currency);
+		return new Sum(new Money(amount, currency), addend);
 	}
 	
 	@Override
@@ -55,11 +55,12 @@ public class Money implements Expression {
 
 	@Override
 	public Money calculate(String currency) {
+		
 		if(this.getCurrency().equals(currency))
 		{
 			return new Money(this.getAmount(), this.getCurrency());
 		}
-		int tradeRate = Bank.getInstance().getTradeRate(this.getCurrency(), currency);
+		float tradeRate = Bank.getInstance().getTradeRate(this.getCurrency(), currency);
 		int newAmount = this.times(tradeRate).getAmount();
 		return new Money(newAmount, currency);
 	}
