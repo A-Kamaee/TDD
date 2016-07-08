@@ -43,7 +43,8 @@ public class Money implements Expression {
 	@Override
 	public Expression plus(Money augend)
 	{
-		return new Money(amount + augend.amount, currency);
+		Money newAddend = this.calculate(augend.currency);
+		return new Money(newAddend.amount + augend.amount, augend.currency);
 	}
 	
 	@Override

@@ -51,12 +51,12 @@ public class MoneyTest {
 	public void testAdditionWithRate()
 	{
 		Bank bank = Bank.getInstance();
+		bank.addRate("USD", "CHF", 3);
+		Money dollar = MoneyFactory.createDollar(5);
+		Expression sum = dollar.plus(MoneyFactory.createFranc(9));
+		Money result = sum.calculate("CHF");
 		
-		Money five = MoneyFactory.createDollar(5);
-		Expression sum = five.plus(five);
-		Money result = sum.calculate("USD");
-		
-		assertEquals(MoneyFactory.createDollar(10) , result);
+		assertEquals(MoneyFactory.createFranc(24) , result);
 	}
 	
 	
